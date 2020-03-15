@@ -88,6 +88,10 @@
 
 TODO
 
+
+内置数据
+* `_qsParams`: URL 参数, 可以在组件中拿到这个值, 例如 `${_qsParams._schema}`
+
 ## 如何扩展组件
 
 TODO

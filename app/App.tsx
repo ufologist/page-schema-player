@@ -42,15 +42,15 @@ export default class App extends React.Component {
     }
 
     loadSchema() {
-        if (qsParams.schema) {
-            loadSchema(qsParams.schema).then((schema) => {
+        if (qsParams._schema) {
+            loadSchema(qsParams._schema).then((schema) => {
                 this.setState({
                     schema: schema
                 });
             });
         } else {
             this.setState({
-                schema: new InfoPageSchema('URL 中必须传入 schema 参数')
+                schema: new InfoPageSchema('URL 中必须传入 _schema 参数')
             });
         }
     }
@@ -60,7 +60,9 @@ export default class App extends React.Component {
             <div>
                 <ToastComponent key="toast" position="top-center" />
                 <AlertComponent key="alert" />
-                <AMisRenderer schema={this.state.schema} />
+                <AMisRenderer schema={this.state.schema} data={{
+                    _qsParams: qsParams
+                }} />
             </div>
         );
     }
