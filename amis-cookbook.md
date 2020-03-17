@@ -548,6 +548,9 @@ fetcher: function(api) {
   }
   ```
 
+参考
+* [Select][Select]
+* [Checkboxes][Checkboxes]
 
 
 
@@ -560,5 +563,6 @@ fetcher: function(api) {
 [FormItem]: https://baidu.github.io/amis/docs/renderers/Form/FormItem
 [Tpl]: https://baidu.github.io/amis/docs/renderers/Tpl
 [Field]: https://baidu.github.io/amis/docs/renderers/Field
-[Field]: https://baidu.github.io/amis/docs/renderers/Field
+[Checkboxes]: https://baidu.github.io/amis/docs/renderers/Form/Checkboxes
+[Select]: https://baidu.github.io/amis/docs/renderers/Form/Select
 [数据作用域]: https://baidu.github.io/amis/docs/advanced#%E6%95%B0%E6%8D%AE%E4%BD%9C%E7%94%A8%E5%9F%9F
