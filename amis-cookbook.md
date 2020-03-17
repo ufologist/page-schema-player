@@ -336,7 +336,7 @@ fetcher: function(api) {
 * `file` 类型默认只允许上传纯文本, 可以设置 `"accept": "*"` 以允许上传任意文件, 或者也可以指定某种文件类型
 * `image` 类型返回的数据格式是有规范的, 必须是 `{"data": {"value": "https://domain.com/a.png"}}`, 但是在文档中没有说明, 只是在 [issue#95](https://github.com/baidu/amis/issues/95) 中提到了
    * 当你的系统返回的数据格式与之不符时, 需要适配, `reciever` 参数是支持 `api` 格式的配置的, 但是在文档中没有说明, 只是在 [issue#259](https://github.com/baidu/amis/issues/259) 中提到 `1.0.3` 版本起就可以了
-* `image` 的 `crop` 参数不只是支持设置 `aspectRatio`, 还支持 [Cropper.js](https://github.com/fengyuanchen/cropperjs) 的其他 `Options`
+* `image` 的 `crop` 参数不仅支持设置 `aspectRatio`, 还支持 [Cropper.js](https://github.com/fengyuanchen/cropperjs) 的其他 `Options`
 * 通过设置 `description`, 可以放一些说明文字
 
 参考
@@ -432,7 +432,7 @@ fetcher: function(api) {
             "&": "$$",
             "ids": "${ids | split:,}"
         },
-        "requestAdaptor": "api.url.replace(/\\[\\d\\]/g, '')"
+        "requestAdaptor": "api.url = api.url.replace(/\\[\\d\\]/g, '')"
     }
     ```
 
