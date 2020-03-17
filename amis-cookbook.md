@@ -284,9 +284,9 @@ fetcher: function(api) {
 参考
 * [Field][Field]
 
-## 表格放出复选框用于做批量操作以及控制每一行是否出现复选框
+## 表格开启复选框用于做批量操作
 
-* 配置 `bulkActions` 并加入到 `headerToolbar` 就可以放出复选框用于做批量操作
+* 配置 `bulkActions` 并加入到 `headerToolbar` 就可以开启复选框用于做批量操作
 
   ```json
   {
@@ -305,7 +305,7 @@ fetcher: function(api) {
       ]
   }
   ```
-* 通过 `Table` 组件的 `itemCheckableOn`(未在官方文档中说明) 可以通过表达式来决定是否在这一行出现复选框
+* 通过 `Table` 组件的 `itemCheckableOn`(未在官方文档中说明) 可以用表达式来决定这一行是否出现复选框
 
   ```json
   {
@@ -525,6 +525,9 @@ fetcher: function(api) {
 
 注意: `definitions` 中定义的表单, 必须先是 `body` 这一层
 
+参考
+* [Definitions][Definitions]
+
 ## 选项全选
 
 * `select` 设置为多选模式时, 通过 `checkAll` 可以开始全选功能
@@ -557,12 +560,13 @@ fetcher: function(api) {
 [Api 类型]: https://baidu.github.io/amis/docs/renderers/Types#api
 [API 说明]: https://baidu.github.io/amis/docs/api
 [自定义组件]: https://baidu.github.io/amis/docs/dev
-[CRUD]: https://baidu.github.io/amis/docs/renderers/CRUD
+[数据作用域]: https://baidu.github.io/amis/docs/advanced#%E6%95%B0%E6%8D%AE%E4%BD%9C%E7%94%A8%E5%9F%9F
+[Definitions]: https://baidu.github.io/amis/docs/renderers/Definitions
+[FormItem]: https://baidu.github.io/amis/docs/renderers/Form/FormItem
 [File]: https://baidu.github.io/amis/docs/renderers/Form/File
 [Image]: https://baidu.github.io/amis/docs/renderers/Form/Image
-[FormItem]: https://baidu.github.io/amis/docs/renderers/Form/FormItem
-[Tpl]: https://baidu.github.io/amis/docs/renderers/Tpl
-[Field]: https://baidu.github.io/amis/docs/renderers/Field
-[Checkboxes]: https://baidu.github.io/amis/docs/renderers/Form/Checkboxes
 [Select]: https://baidu.github.io/amis/docs/renderers/Form/Select
-[数据作用域]: https://baidu.github.io/amis/docs/advanced#%E6%95%B0%E6%8D%AE%E4%BD%9C%E7%94%A8%E5%9F%9F
+[Checkboxes]: https://baidu.github.io/amis/docs/renderers/Form/Checkboxes
+[CRUD]: https://baidu.github.io/amis/docs/renderers/CRUD
+[Field]: https://baidu.github.io/amis/docs/renderers/Field
+[Tpl]: https://baidu.github.io/amis/docs/renderers/Tpl
