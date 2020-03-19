@@ -1,12 +1,17 @@
 const path = require("path");
+
+var yargs = require('yargs');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const {
   CleanWebpackPlugin
 } = require("clean-webpack-plugin");
 
+var argv = yargs.argv;
+var isProd = argv.mode === 'production';
+
 module.exports = {
   entry: {
-    app: "./index.tsx",
+    app: "./src/index.tsx",
 
     "editor.worker": "monaco-editor/esm/vs/editor/editor.worker.js",
     "json.worker": "monaco-editor/esm/vs/language/json/json.worker",
@@ -83,19 +88,21 @@ module.exports = {
   // },
   devtool: false,
   devServer: {
+    host: '0.0.0.0',
+    useLocalIp: true,
     overlay: true,
     disableHostCheck: true
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: "index.html",
+      template: "src/index.html",
       // chunks: ['chunk-vendors', 'chunk-common', 'app']
       chunks: ['app']
     })
   ],
   output: {
-    filename: "[name].[chunkhash].js",
+    filename: isProd ? "[name].[chunkhash:7].js" : "[name].js",
     path: path.resolve(__dirname, "dist"),
     publicPath: ''
   }
