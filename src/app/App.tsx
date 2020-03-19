@@ -88,9 +88,9 @@ export default class App extends React.Component {
                     <ToastComponent key="toast" position="top-center" />
                     <AlertComponent key="alert" />
                     <Switch>
-                        <Route path="/" render={(props) => {
+                        <Route path="/" render={(routeProps) => {
                             return (
-                                <AMisRenderer {...props} 
+                                <AMisRenderer {...routeProps} 
                                               schema={schema}
                                               data={{
                                                   _qsParam: qsParam,
