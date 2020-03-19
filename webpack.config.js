@@ -1,13 +1,32 @@
 const path = require("path");
+var childProcess = require('child_process');
 
+var webpack = require('webpack');
 var yargs = require('yargs');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const {
   CleanWebpackPlugin
 } = require("clean-webpack-plugin");
 
+var pkg = require('./package.json');
+
 var argv = yargs.argv;
 var isProd = argv.mode === 'production';
+
+/**
+ * 获取 Git 最近一次的提交日志
+ * 
+ * @return {string}
+ */
+function getLatestGitLog() {
+    var log = '';
+    try {
+        log = childProcess.execSync('git log -1 --pretty=format:"%h %cd" --date=iso').toString();
+    } catch (error) {
+        console.warn('getLatestGitLog error', error.message);
+    }
+    return log;
+}
 
 module.exports = {
   entry: {
@@ -99,7 +118,8 @@ module.exports = {
       template: "src/index.html",
       // chunks: ['chunk-vendors', 'chunk-common', 'app']
       chunks: ['app']
-    })
+    }),
+    new webpack.BannerPlugin(`${pkg.name} | ${getLatestGitLog()} | (c) ${pkg.author}`)
   ],
   output: {
     filename: isProd ? "[name].[chunkhash:7].js" : "[name].js",

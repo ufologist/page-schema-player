@@ -2,6 +2,7 @@
   "name": "page-schema-player",
   "version": "1.0.0",
   "description": "配页坊: 简称配方 - 为配置页面而生, 专注于配置后台页面",
+  "author": "Sun",
   "main": "src/index.tsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
