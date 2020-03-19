@@ -1,31 +1,7 @@
-/**
- * 获取主域名
- * 
- * @param hostname 
- * @return {string}
- */
-function getMainDomain(hostname) {
-    var domainSegment = hostname.split('.');
-    // 顶级域名
-    var topLevelDomain = domainSegment[domainSegment.length - 1];
-    // 二级域名
-    var secondLevelDomain = domainSegment[domainSegment.length - 2];
-    // 主域名
-    var mainDomain = secondLevelDomain + '.' + topLevelDomain;
-
-    return mainDomain;
-}
-
-/**
- * 获取最后一级的域名
- * 
- * @param hostname 
- * @return {string}
- */
-function getLastLevelDomain(hostname) {
-    var domainSegment = hostname.split('.');
-    return domainSegment[0];
-}
+import {
+    getMainDomain,
+    getLastLevelDomain
+} from './util';
 
 // 测试环境
 // 例如: https://static.test.com/path/to/page-schema-player/index.html

@@ -60,7 +60,7 @@ export default class App extends React.Component {
 
     loadSchema() {
         if (qsParam._schema) {
-            loadSchema(qsParam._schema).then((schema) => {
+            loadSchema(qsParam._schema, qsParam._mode).then((schema) => {
                 // @ts-ignore
                 if (schema.title) {
                     // @ts-ignore
