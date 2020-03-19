@@ -1,15 +1,17 @@
 const path = require("path");
 var childProcess = require('child_process');
 
-var webpack = require('webpack');
 var yargs = require('yargs');
+var webpack = require('webpack');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const {
   CleanWebpackPlugin
 } = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 var pkg = require('./package.json');
-
 var argv = yargs.argv;
 var isProd = argv.mode === 'production';
 
@@ -26,6 +28,56 @@ function getLatestGitLog() {
         console.warn('getLatestGitLog error', error.message);
     }
     return log;
+}
+
+function getStyleLoader(loader) {
+  var use = [
+    "css-loader"
+  ];
+
+  if (loader) {
+    use.push(loader);
+  }
+
+  if (isProd) {
+    use.unshift(MiniCssExtractPlugin.loader);
+  } else {
+    use.unshift({
+      loader: "style-loader",
+      options: { injectType: "styleTag" }
+    });
+  }
+
+  return use;
+}
+
+function getPlugins() {
+  var plugins = [
+    new HtmlWebpackPlugin({
+      template: "src/index.html",
+      // chunks: ['chunk-vendors', 'chunk-common', 'app']
+      chunks: ['app']
+    })
+  ];
+  if (isProd) {
+    plugins.unshift(new CleanWebpackPlugin());
+    plugins.push(new MiniCssExtractPlugin({
+      filename: '[name].[contenthash:7].css',
+      chunkFilename: '[name].[contenthash:7].css'
+    }));
+    plugins.push(new webpack.BannerPlugin(`${pkg.name} | ${getLatestGitLog()} | (c) ${pkg.author}`));
+  }
+
+  return plugins;
+}
+
+function getMinimizer() {
+  var minimizer = [];
+  if (isProd) {
+    minimizer = [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})];
+  }
+
+  return minimizer;
 }
 
 module.exports = {
@@ -53,24 +105,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: "style-loader",
-            options: { injectType: "styleTag" }
-          },
-          "css-loader"
-        ]
+        use: getStyleLoader()
       },
       {
         test: /\.less$/i,
-        use: [
-          {
-            loader: "style-loader",
-            options: { injectType: "styleTag" }
-          },
-          "css-loader",
-          "less-loader"
-        ]
+        use: getStyleLoader('less-loader')
       },
       {
         test: /\.(png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/,
@@ -112,15 +151,10 @@ module.exports = {
     overlay: true,
     disableHostCheck: true
   },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      template: "src/index.html",
-      // chunks: ['chunk-vendors', 'chunk-common', 'app']
-      chunks: ['app']
-    }),
-    new webpack.BannerPlugin(`${pkg.name} | ${getLatestGitLog()} | (c) ${pkg.author}`)
-  ],
+  plugins: getPlugins(),
+  optimization: {
+    minimizer: getMinimizer()
+  },
   output: {
     filename: isProd ? "[name].[chunkhash:7].js" : "[name].js",
     path: path.resolve(__dirname, "dist"),
