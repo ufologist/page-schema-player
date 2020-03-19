@@ -53,6 +53,8 @@ export default function getDefaultMode() {
     } else if (getMainDomain(hostname) === testEnvMainDomain) { // 根据域名规则来界定测试环境和沙箱环境
         mode = 'test';
 
+        // 这里需要由使用者根据自己的情况来实现
+        // 例如根据当前页面的域名, 结合测试环境域名的某些规则(例如都是 test 开头), 来自动识别为测试环境
         var lastLevelDomain = getLastLevelDomain(hostname);
         for (var i = 0, length = testSubEnv.length; i < length; i++) {
             if (lastLevelDomain.indexOf(testSubEnv[i]) !== -1) {
