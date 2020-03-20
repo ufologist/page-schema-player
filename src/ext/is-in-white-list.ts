@@ -4,11 +4,17 @@ import {
 
 var domainWhiteList = [
     'localhost',
+    '192.168',
     'github.com',
     'github.io'
 ];
 
 export default function isInWhiteList(url) {
+    // 允许 blob URL, 但注意是有安全隐患的
+    if (url.indexOf('blob:') === 0) {
+        return true;
+    }
+
     var anchor = document.createElement('a');
     anchor.href = url;
     // 如果 URL 为相对路径, hostname 为当前页面的域名
@@ -16,7 +22,7 @@ export default function isInWhiteList(url) {
     var mainDomain = getMainDomain(anchor.hostname);
 
     var whiteListDomain = domainWhiteList.find(function(value) {
-        return mainDomain.indexOf(value) !== -1;
+        return mainDomain.indexOf(value) === 0;
     });
 
     return Boolean(whiteListDomain);

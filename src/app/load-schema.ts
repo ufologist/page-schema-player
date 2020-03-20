@@ -28,11 +28,16 @@ class LoadedErrorPageSchema extends InfoPageSchema {
 export default function(url:string) {
     NProgress.start();
 
-    var _url = new QsMan(url).append({
-        _: Date.now()
-    }).toString();
+    var _url = url;
+    // 排除掉 blob URL
+    // 因为 GET blob:http://localhost/f505556e-7dd0-462f-a5ac-bda1bfbd2cd8?a=1 net::ERR_FILE_NOT_FOUND
+    if (_url.indexOf('blob:') !== 0) {
+        _url = new QsMan(_url).append({
+            _: Date.now()
+        }).toString();
+    }
 
-    if (isInWhiteList(url)) {
+    if (isInWhiteList(_url)) {
         return axios({
             method: 'get',
             url: _url
