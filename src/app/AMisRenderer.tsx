@@ -53,6 +53,7 @@ export default class AMisRenderer extends React.Component<RendererProps> {
                     action.blank === false ? (window.location.href = to) : window.open(to);
                     return;
                 }
+                // TODO 当使用 nav 组件时应该是内部路由跳转
                 window.location.replace(to);
             }),
             fetcher: (fetcherConfig: any) => {
@@ -107,7 +108,7 @@ export default class AMisRenderer extends React.Component<RendererProps> {
                     if (error.response) {
                         error.message = `网络请求错误(错误码:H${error.response.status})`;
                     } else {
-                        error.message = `网络请求失败(错误码:A${error.message.charCodeAt(0)})`;
+                        error.message = `网络请求失败(错误码:A${error.message?.charCodeAt(0) || 0})`;
                     }
                     throw error;
                 });
