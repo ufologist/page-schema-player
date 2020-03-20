@@ -1,6 +1,8 @@
 import * as React from 'react';
 import axios from 'axios';
 import QsMan from 'qsman';
+var NProgress = require('nprogress');
+import 'nprogress/nprogress.css';
 
 import InfoPageSchema from './info-page-schema';
 import isInWhiteList from '../ext/is-in-white-list';
@@ -24,6 +26,8 @@ class LoadedErrorPageSchema extends InfoPageSchema {
  * @param url 
  */
 export default function(url:string) {
+    NProgress.start();
+
     var _url = new QsMan(url).append({
         _: Date.now()
     }).toString();
@@ -66,8 +70,11 @@ export default function(url:string) {
             return schema;
         }).catch((error) => {
             return new LoadedErrorPageSchema('加载页面的配置失败了', url, error);
+        }).finally(function() {
+            NProgress.done();
         });
     } else {
+        NProgress.done();
         return Promise.resolve(new LoadedErrorPageSchema('只能加载域名白名单内的页面配置', url, new Error('设置了域名白名单规则以避免安全问题')));
     }
 }

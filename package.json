@@ -20,6 +20,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^3.4.1",
     "copy-to-clipboard": "3.0.8",
+    "nprogress": "^0.2.0",
     "qsman": "0.0.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
