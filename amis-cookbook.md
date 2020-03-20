@@ -1,5 +1,34 @@
 # AMis 实用手册
 
+## 先看一遍官网文档
+
+* [快速开始](https://baidu.github.io/amis/docs/getting-started#jssdk)
+
+  > 这是一个基于 React 框架的页面渲染器，有配置就能生成页面，配置是什么样的？请前往基本用法阅读。知道怎么配置后，就可以用以下方式用于自己的项目了。
+  >
+  > 如果你没有组件定制需求直接使用，而且不想折腾 React 相关的，我建议你直接用 JSSDK 用法。
+* [基本用法](https://baidu.github.io/amis/docs/basic)和[高级用法](https://baidu.github.io/amis/docs/advanced)
+
+  > 为了简化前端开发，amis Renderer 能够直接用配置就能将页面渲染出来。
+* [API 说明](https://baidu.github.io/amis/docs/api)
+
+  > amis 渲染器的数据都来源于 api，有一定的格式要求。
+  >
+  > 每个渲染的接口返回都有自己的格式要求，主要体现在 data 字段内部，具体请参考每个渲染的接口说明。
+* [如何定制](https://baidu.github.io/amis/docs/sdk)和[自定义组件](https://baidu.github.io/amis/docs/dev)
+
+  > 工作原理: amis 的渲染过程就是将 json 转成对应的 React 组件。先通过 json 的 type 找到对应的 Component 然后，然后把其他属性作为 props 传递过去完成渲染。
+* [样式说明](https://baidu.github.io/amis/docs/style)
+
+  > amis 中有大量的功能类 class 可以使用，即可以用在 schema 中，也可以用在自定义组件开发中，掌握这些 class, 几乎可以不用写样式。
+  >
+  > amis 中的样式基于 [Bootstrap V3](https://v3.bootcss.com/), 集成了 [Font Awesome](https://fontawesome.com/icons?d=gallery&m=free) 图标
+* 所有的[示例](https://baidu.github.io/amis/pages/simple)和[渲染器](https://baidu.github.io/amis/docs/renderers)都快速过一遍
+* 对 AMis 提供的能力要有大概的印象
+  * 例如有哪些内置组件是可以配置出来的, 大概提供了什么功能
+  * 有了印象就相当于在大脑中建立了索引, 这样当你遇到问题时可以快速在官方文档中找到想要的内容, 而不至于瞎猫乱撞, 在查找内容和确认 AMis 内置能力方面花很多时间
+  * 使用官方文档提供的搜索功能, 可以让你快速找到想要的内容
+
 ## 适配接口的数据格式
 
 amis 要求所有的接口都必须返回固定的数据格式, 当你的系统与之不符时, 需要在 `fetcher` 那做适配, 例如
