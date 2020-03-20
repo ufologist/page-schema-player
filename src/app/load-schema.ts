@@ -23,12 +23,12 @@ class LoadedErrorPageSchema extends InfoPageSchema {
  * 
  * @param url 
  */
-export default function(url:string, mode:string) {
+export default function(url:string) {
     var _url = new QsMan(url).append({
         _: Date.now()
     }).toString();
 
-    if (isInWhiteList(url, mode)) {
+    if (isInWhiteList(url)) {
         return axios({
             method: 'get',
             url: _url
