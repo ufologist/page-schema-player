@@ -47,7 +47,7 @@ if (!qsParam._mode) {
 
 export default class App extends React.Component {
     state:AppState = {
-        schema: new InfoPageSchema('正在加载页面配置')
+        schema: new InfoPageSchema('正在加载页面配置', '', '', ' ')
     };
 
     constructor(props:any) {
