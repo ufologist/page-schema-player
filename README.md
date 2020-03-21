@@ -141,7 +141,7 @@ page-schema-player/
   }
   ```
 
-## 如何扩充自定义组件
+## 如何自定义组件
 
-* [自定义组件的说明文档](https://baidu.github.io/amis/docs/dev)
-* 在 `src/ext/amis-components/` 目录下实现组件
+* [实现自定义组件的说明文档](https://baidu.github.io/amis/docs/dev)
+* 将自定义组件放置在 `src/ext/amis-components` 目录下
