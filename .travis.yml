@@ -1,0 +1,19 @@
+# https://docs.travis-ci.com/user/deployment/pages/
+language: node_js
+node_js:
+  - "8"
+  - node
+
+script: 
+  - npm run build
+  - cp README.md dist
+  - cp .gitignore dist
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  local_dir: dist
+  on:
+    branch: master
