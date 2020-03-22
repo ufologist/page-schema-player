@@ -141,7 +141,15 @@ page-schema-player/
   }
   ```
 
-## 如何自定义组件
+## 如何自定义组件?
 
 * [实现自定义组件的说明文档](https://baidu.github.io/amis/docs/dev)
 * 将自定义组件放置在 `src/ext/amis-components` 目录下
+
+## 构建部署
+
+```
+npm run build
+```
+
+最终你只需要将 `dist` 目录下的所有文件部署到服务器上就可以了, 例如做为静态资源上传到阿里云 OSS.
