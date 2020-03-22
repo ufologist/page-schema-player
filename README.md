@@ -1,9 +1,11 @@
 # 配页坊: 简称配方 - 为配置页面而生, 专注于配置后台页面
 
-[![Known Vulnerabilities][vulnerabilities-status-image]][vulnerabilities-status-url] [![changelog][changelog-image]][changelog-url] [![license][license-image]][license-url]
+[![Build Status][ci-status-image]][ci-status-url] [![Known Vulnerabilities][vulnerabilities-status-image]][vulnerabilities-status-url] [![changelog][changelog-image]][changelog-url] [![license][license-image]][license-url]
 
 [vulnerabilities-status-image]: https://snyk.io/test/npm/page-schema-player/badge.svg
 [vulnerabilities-status-url]: https://snyk.io/test/npm/page-schema-player
+[ci-status-image]: https://travis-ci.com/ufologist/page-schema-player.svg?branch=master
+[ci-status-url]: https://travis-ci.com/ufologist/page-schema-player
 [license-image]: https://img.shields.io/github/license/ufologist/page-schema-player.svg
 [license-url]: https://github.com/ufologist/page-schema-player/blob/master/LICENSE
 [changelog-image]: https://img.shields.io/badge/CHANGE-LOG-blue.svg?style=flat-square
