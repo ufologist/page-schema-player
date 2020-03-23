@@ -78,8 +78,14 @@ fetcher: function(api) {
       api: {
           url: 'https://domain.com/list',
           adaptor: function(payload, response, api) {
-              payload.data.items = payload.data.content;
-              payload.data.total = payload.data.totalElements;
+              var data = payload.data;
+
+              var _data = {
+                  items: data.content,
+                  total: data.totalElements
+              };
+
+              payload.data = _data;
               return payload;
           }
       }
@@ -107,12 +113,18 @@ fetcher: function(api) {
      return axios(url, config).then(function(response) {
          // 适配组件接口规范
          if (response.data.data) {
-             // CURD: https://baidu.github.io/amis/docs/renderers/CRUD#%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E
+             // CRUD: https://baidu.github.io/amis/docs/renderers/CRUD#%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E
+             // 实际中发现, CRUD 还支持 {rows:[],total:0} 这样的数据格式
              if (adaptorName === 'page-content') {
                  // 适配 data 的这种格式
                  // {
                  //     "content": [],
                  //     "totalElements": 0
+                 // }
+                 // 到 CRUD 要求的格式
+                 // {
+                 //     "item": [],
+                 //     "total": 0
                  // }
                  response.data.data = {
                      items: response.data.data.content,
