@@ -191,6 +191,26 @@ fetcher: function(api) {
 * [amis/src/utils/api.ts#buildApi](https://github.com/baidu/amis/blob/94cbacef61cfacbd37f4d637253ea457b8066bb4/src/utils/api.ts#L82)
 * [amis/src/utils/tpl-builtin.ts#tokenize](https://github.com/baidu/amis/blob/94cbacef61cfacbd37f4d637253ea457b8066bb4/src/utils/tpl-builtin.ts#L425)
 
+## 给整个页面一些初始化的数据, 例如权限
+
+通过配置 `page` 的 [`initApi`](https://baidu.github.io/amis/docs/renderers/Page#initapi), 可以让返回的数据在当前 page 渲染器, 以及所有孩子渲染器都能取到这个变量, 例如告诉前端是否有新增按钮的权限
+
+```json
+{
+    "type": "page",
+    "title": "页面的初始化数据",
+    "body": "initApi 返回的数据: ${date}",
+    "initApi": "https://houtai.baidu.com/api/mock2/page/initData?$"
+}
+```
+
+注意由于配页坊会使用提示页面的 schema 先整体渲染一次 page, 走的 `componentDidMount`, 此时因为没有 `initApi` 所以不会去加载什么初始化数据.
+
+待远端的 schema 加载回来 `setState` 之后, 会走 `componentDidUpdate`, 此时要让页面去加载 `initApi` 配置的初始化数据, 就必须通过 `isApiOutdated` 的判断条件, 因此在 `initApi` 中添加了一个 `$` 符号, 以达成这个条件去执行加载初始化数据的逻辑
+
+参考
+* [amis/src/renderers/Page.tsx#componentDidUpdate](https://github.com/baidu/amis/blob/bd5b6dd8400e2bb3b76720ebd0fb8f012664f869/src/renderers/Page.tsx#L158)
+
 ## 给表格添加搜索条件搜索按钮
 
 通过 `filter` 给表格添加搜索条件, 就是添加一个 `Form` 上去
