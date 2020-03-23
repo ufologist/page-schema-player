@@ -158,6 +158,36 @@ fetcher: function(api) {
 
 参考
 * [Api 类型][Api 类型]
+* 常用组件的数据结构要求
+  * crud
+    ```json
+    "data": {
+        "items": [
+            {    // 每一行的数据
+                "id": 1,
+                "xxx": "xxxx"
+            }
+        ],
+        "total": 200 // 注意这里不是当前请求返回的 items 的长度, 而是一共有多少条数据, 用于生成分页
+                     // 如果你不想要分页, 不返回这个就可以了
+    }
+    ```
+  * select/checkboxes/radios/list
+    ```json
+    "data": {
+        "options": [
+            {
+                "label": "描述",
+                "value": "值"
+            },
+            {
+                "label": "描述2",
+                "value": "值2"
+            }
+        ],
+        "value": "值" // 默认值，可以获取列表的同时设置默认值。
+    }
+    ```
 
 ## 动态化 API 的 `url`
 
