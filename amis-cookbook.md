@@ -313,6 +313,81 @@ fetcher: function(api) {
 参考
 * [Field][Field]
 
+## 弹框回调事件
+
+通过配置 `dialog.onClose` 和 `dialog.onConfirm`, 可以分别在关闭弹框和确认弹框(表单提交成功)时加入自定义的逻辑
+
+```json
+{
+    "body": {
+        "label": "弹出弹框",
+        "type": "button",
+        "actionType": "dialog",
+        "dialog": {
+            "title": "弹框",
+            "body": {
+                "type": "form",
+                "api": "https://houtai.baidu.com/api/mock2/form/saveForm?waitSeconds=1",
+                "controls": [
+                    {
+                        "type": "text",
+                        "name": "text",
+                        "label": "文本"
+                    }
+                ]
+            },
+            "onClose": function() {
+                alert('关闭弹框');
+            },
+            "onConfirm": function() {
+                alert('提交成功');
+            }
+        }
+    }
+}
+```
+
+参考
+* [amis/src/renderers/Dialog.tsx](https://github.com/baidu/amis/blob/bd5b6dd8400e2bb3b76720ebd0fb8f012664f869/src/renderers/Dialog.tsx#L57)
+* [Button][Button]
+
+## 表单回调事件
+
+通过配置 `form.onFinished` 等一系列 `form.onXxx` 可以在表单回调时加入自定义的逻辑
+
+```json
+{
+    "type": "page",
+    "body": {
+        "type": "form",
+        "api": "https://houtai.baidu.com/api/mock2/form/saveForm?waitSeconds=1",
+        "controls": [
+            {
+                "name": "email",
+                "label": "Email",
+                "type": "email",
+                "description": "描述文字"
+            },
+            {
+                "name": "text",
+                "type": "text",
+                "label": "Text",
+                "required": true
+            }
+        ],
+        "onSubmit": function() {
+            alert('发送提交');
+        },
+        "onFinished": function() {
+            alert('提交成功');
+        }
+    }
+}
+```
+
+参考
+* [amis/src/renderers/Form/index.tsx](https://github.com/baidu/amis/blob/bd5b6dd8400e2bb3b76720ebd0fb8f012664f869/src/renderers/Form/index.tsx#L92)
+
 ## 表格开启复选框用于做批量操作
 
 * 配置 `bulkActions` 并加入到 `headerToolbar` 就可以开启复选框用于做批量操作
@@ -536,6 +611,9 @@ fetcher: function(api) {
   }
   ```
 
+参考
+* [Dialog][Dialog]
+
 ## 新增和修改共用一套表单
 
 * 列表的新增行数据表单和修改行数据表单基本上一致的
@@ -664,3 +742,5 @@ fetcher: function(api) {
 [CRUD]: https://baidu.github.io/amis/docs/renderers/CRUD
 [Field]: https://baidu.github.io/amis/docs/renderers/Field
 [Tpl]: https://baidu.github.io/amis/docs/renderers/Tpl
+[Dialog]: https://baidu.github.io/amis/docs/renderers/Dialog
+[Button]: https://baidu.github.io/amis/docs/renderers/Form/Button
