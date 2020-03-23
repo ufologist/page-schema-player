@@ -471,6 +471,71 @@ fetcher: function(api) {
 * [amis/src/utils/tpl-builtin.ts#dataMapping](https://github.com/baidu/amis/blob/94cbacef61cfacbd37f4d637253ea457b8066bb4/src/utils/tpl-builtin.ts#L476)
 * [Api 类型][Api 类型]
 
+## 控制表单的底部按钮
+
+* 单独使用表单时, 是配置 `form` 的 `actions` 来控制表单的底部按钮
+
+  ```json
+  {
+      "type": "page",
+      "title": "独立表单",
+      "body": {
+          "type": "form",
+          "title": "独立表单",
+          "controls": [
+              {
+                  "label": "文本",
+                  "name": "text",
+                  "type": "text"
+              }
+          ],
+          "actions": [
+              {
+                  "label": "提交",
+                  "type": "submit"
+              }
+          ]
+      }
+  }
+  ```
+* **当在弹框中使用表单时, 配置在 `form` 上的 `actions` 会被忽略**, `dialog` 默认会有【取消】和【确认】这两个按钮, 可以通过配置 `dialog` 的 `actions` 来控制弹框的底部按钮
+  ```json
+  {
+      "type": "page",
+      "title": "弹框中的表单",
+      "body": {
+          "label": "弹个表单",
+          "type": "button",
+          "actionType": "dialog",
+          "dialog": {
+              "actions": [
+                  {
+                      "label": "dialog.actions",
+                      "type": "submit"
+                  }
+              ],
+              "body": {
+                  "type": "form",
+                  "title": "独立表单",
+                  "controls": [
+                      {
+                          "label": "文本",
+                          "name": "text",
+                          "type": "text"
+                      }
+                  ],
+                  "actions": [
+                      {
+                          "label": "form.actions",
+                          "type": "submit"
+                      }
+                  ]
+              }
+          }
+      }
+  }
+  ```
+
 ## 新增和修改共用一套表单
 
 * 列表的新增行数据表单和修改行数据表单基本上一致的
