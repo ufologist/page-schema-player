@@ -442,6 +442,21 @@ fetcher: function(api) {
         },
         "onFinished": function() {
             alert('提交成功');
+        },
+        "onValidate": function(storeData, store) {
+            // 实现有联动关系的校验(动态校验)
+            // 根据 a 字段的值, 来决定 b 字段是否校验通过
+            // 需要清除 b 字段的验证错误信息, 否则会一直存在
+            store.getItemByName('b').clearError();
+            if (storeData.a === 0) {
+                return Promise.resolve({
+                    b: '必须选 1 个'
+                });
+            } else if (storeData.a === 1) {
+                return Promise.resolve({
+                    b: '必须选 2 个'
+                });
+            }
         }
     }
 }
