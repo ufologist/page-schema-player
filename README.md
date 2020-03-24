@@ -120,6 +120,25 @@ page-schema-player/
     }
     ```
   * 在 URL 参数中指定: `_adaptor=your_adaptor_name`
+* 在 `window.amisEnv` 上暴露了 AMis 的内部方法, 方便在外部场景中需要时使用(例如弹一个 `notify` 或者发一个 HTTP 请求)
+  ```javascript
+  amisEnv.notify('error', '内容');
+  amisEnv.alert('内容', '标题');
+  amisEnv.confirm('内容', '标题').then(function(confirm) {
+      if (confirm) {
+          alert('确定');
+      } else {
+          alert('取消');
+      }
+  });
+  amisEnv.copy('内容');
+  amisEnv.fetcher({
+      method: 'get',
+      url: 'https://houtai.baidu.com/api/mock2/saveForm?waitSeconds=2'
+  }).then(function(response) {
+      console.log('fetcher', response);
+  });
+  ```
 
 为了方便使用, [内置了一些全局数据](./src/app/App.tsx), 可以在页面的配置中使用这些值, 具体请参考[数据作用域](https://baidu.github.io/amis/docs/advanced#%E6%95%B0%E6%8D%AE%E4%BD%9C%E7%94%A8%E5%9F%9F)
 * `_qsParams`: URL 上的参数
