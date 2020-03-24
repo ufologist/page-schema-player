@@ -133,6 +133,16 @@ export default class AMisRenderer extends React.Component<RendererProps> {
             },
             affixOffsetTop: 0
         };
+
+        // 有些场景下需要用到 env 中的方法, 例如要弹出一个 notify, 或者发一个额外的 HTTP 请求
+        // @ts-ignore
+        window.amisEnv = {
+            fetcher: this.env.fetcher,
+            notify: this.env.notify,
+            alert: this.env.alert,
+            confirm: this.env.confirm,
+            copy: this.env.copy
+        };
     }
 
     render() {
