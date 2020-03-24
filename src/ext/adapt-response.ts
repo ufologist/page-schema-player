@@ -96,6 +96,8 @@ export default function adaptResponse(response, adaptorName) {
             amisApi.msg = result.message;
         } else if (result.statusInfo && typeof result.statusInfo.message !== 'undefined') {
             amisApi.msg = result.statusInfo.message;
+        } else {
+            amisApi.msg = result.msg;
         }
     } else if (typeof result.data !== 'undefined') { // 适配只返回了 data 字段
         amisApi.data = result.data;
