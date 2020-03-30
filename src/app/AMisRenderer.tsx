@@ -25,8 +25,6 @@ interface RendererProps {
  */
 export default class AMisRenderer extends React.Component<RendererProps> {
     env: any = null;
-    // schema 级别的 API 统一配置项
-    schemaApiConfig: any = {};
 
     handleAction = (e: any, action: Action) => {
         this.env.alert(`没有识别的动作：${JSON.stringify(action)}`);
@@ -35,7 +33,6 @@ export default class AMisRenderer extends React.Component<RendererProps> {
     constructor(props: RendererProps) {
         super(props);
         const history = props.history;
-        this.setSchemaApiConfig();
 
         // todo，这个过程可以 cache
         this.env = {
@@ -62,25 +59,18 @@ export default class AMisRenderer extends React.Component<RendererProps> {
             fetcher: (fetcherConfig: any) => {
                 var url = fetcherConfig.url;
                 var method = fetcherConfig.method;
+                var data = fetcherConfig.data;
                 var config = fetcherConfig.config;
-                var data = fetcherConfig.data || this.schemaApiConfig.data;
-                if (data && typeof data === 'object') {
-                    data = {
-                        ...this.schemaApiConfig.data,
-                        ...data
-                    };
-                }
-                var headers = {
-                    ...this.schemaApiConfig.headers,
-                    ...fetcherConfig.headers
-                };
+                var headers = fetcherConfig.headers;
 
                 config = config || {};
+                config.headers = config.headers || {};
+                config.withCredentials = true;
+
                 if (config.cancelExecutor) {
                     config.cancelToken = new axios.CancelToken(config.cancelExecutor);
                 }
-                config.headers = config.headers || {};
-                config.withCredentials = true;
+
                 config.headers = headers || {};
                 config.method = method;
 
@@ -111,19 +101,6 @@ export default class AMisRenderer extends React.Component<RendererProps> {
                 } else if (qsParam._adaptor) {
                     adaptorName = qsParam._adaptor;
                 }
-
-                var {
-                    url: schemaApiConfigUrl,
-                    method: schemaApiConfigMethod,
-                    params: schemaApiConfigParams,
-                    data: schemaApiConfigData,
-                    headers: schemaApiConfigHeaders,
-                    ...schemaApiConfigRest
-                } = this.schemaApiConfig
-                config = {
-                    ...schemaApiConfigRest,
-                    ...config
-                };
 
                 return axios(url, config).then(function(response) {
                     return adaptResponse(response, adaptorName);
@@ -168,10 +145,6 @@ export default class AMisRenderer extends React.Component<RendererProps> {
         };
     }
 
-    setSchemaApiConfig() {
-        this.schemaApiConfig = this.props.schema?.apiConfig || {};
-    }
-
     render() {
         const {
             schema,
@@ -179,7 +152,6 @@ export default class AMisRenderer extends React.Component<RendererProps> {
             onAction,
             ...rest
         } = this.props;
-        this.setSchemaApiConfig();
         return renderAmis(schema, {
             onAction: onAction || this.handleAction,
             theme,
