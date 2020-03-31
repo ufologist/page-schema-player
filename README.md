@@ -119,7 +119,45 @@ page-schema-player/
         }
     }
     ```
-  * 在 URL 参数中指定: `_adaptor=your_adaptor_name`
+  * 在 `api.url` 参数中指定: `_adaptor=your_adaptor_name`
+* [实现未登录处理器](./src/ext/adapt-response.ts): 当发现接口返回某种状态时, 就重定向到某个页面. 使用方法为在 `api` 中配置 `_unauthorized` 或者在 URL 参数中指定内置 `_unauthorized` 处理器的名称
+  * 在 `api` 中配置 `_unauthorized`, 支持多种方式
+    * 方式1: 指定内置处理器的名字(`handler: 'xxx'`), 例如只需要指定未登录处理器的名字为 `demo`, 那么只要接口遇到 `401` 的状态码, 就自动跳转到某个统一登录页
+    * 方式2: 指定方法完全自定义逻辑(`handler: function(result)`)
+    * 方式3: 指定状态码(`status`)和重定向页面(`redirectUrl`)以及重定向参数的名称(`redirectParamName`)
+
+    ```json
+    // 最简单的方式, 通过字符串来指定内置未登录处理器的名字
+    "api": {
+        "_unauthorized": "demo"
+    }
+
+    // 当指定方法时, 则可以完全自定义逻辑
+    "api": {
+        "_unauthorized": function(result) {
+            alert('在这里实现判断未登录的逻辑, 并完成后续动作');
+        }
+    }
+
+    // 当使用对象来指定时, 则设置 `handler` 属性, 也是支持字符串或者方法
+    "api": {
+        "_unauthorized": {
+            "handler": "demo"
+        }
+    }
+
+    // 当使用对象来指定时, 可以通过设置 status, redirectUrl, redirectParamName 属性来自定义重定向
+    // 即当接口返回的状态为 status 时, 重定向到 redirectUrl, 重定向时会将当前页面的 URL 传给 redirectParamName 指定的那个参数
+    "api": {
+        "_unauthorized": {
+            "status": 401,
+            "redirectUrl": "//github.com/ufologist",
+            // "redirectUrl": "${_env.api}", // redirectUrl 支持使用变量, 会传入 `_env` 数据
+            "redirectParamName": "redirect_uri"
+        }
+    }
+    ```
+  * 在 `api.url` 参数中指定: `_unauthorized=your_unauthorized_name`
 * 在 `window.amisEnv` 上暴露了 AMis 的内部方法, 方便在外部场景中需要时使用(例如弹一个 `notify` 或者发一个 HTTP 请求)
   ```javascript
   amisEnv.notify('error', '内容');
