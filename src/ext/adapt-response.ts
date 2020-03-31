@@ -1,7 +1,84 @@
 // @ts-nocheck
+import QsMan from 'qsman';
 import {
     filter
 } from 'amis';
+import {
+    tokenize
+} from 'amis/lib/utils/tpl-builtin';
+
+// 获取默认的环境模式
+import getDefaultMode from './get-default-mode';
+
+var qsParam = new QsMan(window.location.search).getObject();
+// 自动识别环境模式
+if (!qsParam._mode) {
+    qsParam._mode = getDefaultMode();
+}
+
+/**
+ * 接口告知未登录时如何处理, 即可以理解为未登录处理器
+ * 
+ * @param {object} result
+ * 
+ * @param {object} unauthorized
+ * @param {string | function} unauthorized.handler 字符串类型表示使用内置的未登录处理器, 方法类型表示自定义实现
+ * @param {number} unauthorized.status 接口返回中的状态为多少时表示需要登录
+ * @param {string} unauthorized.redirectUrl 未登录时需要重定向到哪里去
+ * @param {string} unauthorized.redirectParamName 传给重定向页面的回调参数名
+ * 
+ * @param {object} schemaEnv schema 配置中匹配出来的 env
+ */
+function handleUnauthorized(result, unauthorized, schemaEnv) {
+    if (typeof unauthorized.handler === 'string') { // 内置
+        // TODO 在这里实现你自己的内置未登录处理器, 下面的代码仅供参考
+        if (unauthorized.handler === 'demo') { // 例如跳转到某个统一登录页
+            unauthorized.status = 401;
+            if (qsParam._mode === 'production') {
+                unauthorized.redirectUrl = '//github.com/ufologist/page-schema-player';
+            } else {
+                unauthorized.redirectUrl = '//github.com/ufologist/page-schema';
+            }
+            unauthorized.redirectParamName = 'redirect_uri';
+
+            redirectWhenUnauthorized(result.status, unauthorized);
+        } else {
+            console.warn('api._unauthorized.handler is not found', unauthorized);
+        }
+    } else if (typeof unauthorized.handler === 'function') { // 自定义
+        try {
+            unauthorized.handler(result);
+        } catch (error) {
+            console.warn('api._unauthorized.handler exec error', unauthorized, error);
+        }
+    } else if (unauthorized.status) { // 告知状态来处理未登录重定向
+        if (unauthorized.redirectUrl) {
+            // https://github.com/baidu/amis/blob/bd5b6dd8400e2bb3b76720ebd0fb8f012664f869/src/utils/api.ts#L69
+            unauthorized.redirectUrl = tokenize(unauthorized.redirectUrl, {
+                _env: schemaEnv
+            }, '| raw');
+            redirectWhenUnauthorized(result.status, unauthorized);
+        } else {
+            console.warn('api._unauthorized.redirectUrl is not config', unauthorized);
+        }
+    }
+}
+
+/**
+ * 通过状态判定为未登录时重定向到某个页面
+ */
+function redirectWhenUnauthorized(resultStatus, {
+    status,
+    redirectUrl = '',
+    redirectParamName = 'redirect_uri'
+}) {
+    if (resultStatus == status) {
+        var url = new QsMan(redirectUrl).append({
+            [redirectParamName]: window.location.href
+        }).toString();
+        window.location.replace(url);
+    }
+}
 
 /**
  * 适配组件接口规范
@@ -79,7 +156,7 @@ function adaptData(data, adaptorName: string) {
  * @param response 
  * @see https://baidu.github.io/amis/docs/api
  */
-export default function adaptResponse(response, adaptorName) {
+export default function adaptResponse(response, adaptorName, unauthorized, schemaEnv) {
     var result = response.data;
 
     var amisApi = {
@@ -107,6 +184,7 @@ export default function adaptResponse(response, adaptorName) {
 
     if (amisApi.status != 0) {
         amisApi.msg = `${amisApi.msg || '接口调用出错但未提供错误信息'}(错误码:B${amisApi.status})`;
+        handleUnauthorized(amisApi, unauthorized, schemaEnv);
     }
 
     // 表单提交成功后, 会默认打开一个 toast 提示接口返回的消息

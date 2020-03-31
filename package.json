@@ -1,6 +1,6 @@
 {
   "name": "page-schema-player",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "配页坊: 简称配方 - 为配置页面而生, 专注于配置后台页面",
   "author": "Sun",
   "main": "src/index.tsx",

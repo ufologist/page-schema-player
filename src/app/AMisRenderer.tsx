@@ -25,6 +25,7 @@ interface RendererProps {
  */
 export default class AMisRenderer extends React.Component<RendererProps> {
     env: any = null;
+    schemaEnv: any = {};
 
     handleAction = (e: any, action: Action) => {
         this.env.alert(`没有识别的动作：${JSON.stringify(action)}`);
@@ -33,6 +34,7 @@ export default class AMisRenderer extends React.Component<RendererProps> {
     constructor(props: RendererProps) {
         super(props);
         const history = props.history;
+        this.schemaEnv = props.data?._env || {};
 
         // todo，这个过程可以 cache
         this.env = {
@@ -91,8 +93,8 @@ export default class AMisRenderer extends React.Component<RendererProps> {
 
                 data && (config.data = data);
 
-                // 通过给 adaptor 指定名称来自动适配组件接口规范
                 var qsParam = new QsMan(url).getObject();
+                // 通过给 api.adaptor.name 指定名称来自动适配组件接口规范
                 var adaptorName = '';
                 if (typeof fetcherConfig.adaptor === 'object') {
                     adaptorName = fetcherConfig.adaptor.name;
@@ -102,8 +104,20 @@ export default class AMisRenderer extends React.Component<RendererProps> {
                     adaptorName = qsParam._adaptor;
                 }
 
-                return axios(url, config).then(function(response) {
-                    return adaptResponse(response, adaptorName);
+                // 通过 api._unauthorized 指定调用接口告知未登录时如何处理, 即可以理解为未登录处理器
+                var unauthorized = {};
+                if (typeof fetcherConfig._unauthorized === 'object') {
+                    unauthorized = fetcherConfig._unauthorized;
+                } else if (typeof fetcherConfig._unauthorized === 'string' || typeof fetcherConfig._unauthorized === 'function') {
+                    // @ts-ignore
+                    unauthorized.handler = fetcherConfig._unauthorized;
+                } else if (qsParam._unauthorized) {
+                    // @ts-ignore
+                    unauthorized.handler = qsParam._unauthorized;
+                }
+
+                return axios(url, config).then((response) => {
+                    return adaptResponse(response, adaptorName, unauthorized, this.schemaEnv);
                 }, function(error) {
                     if (error.response) {
                         error.message = `网络请求错误(错误码:H${error.response.status})`;
@@ -152,6 +166,7 @@ export default class AMisRenderer extends React.Component<RendererProps> {
             onAction,
             ...rest
         } = this.props;
+        this.schemaEnv = this.props.data?._env || {};
         return renderAmis(schema, {
             onAction: onAction || this.handleAction,
             theme,
