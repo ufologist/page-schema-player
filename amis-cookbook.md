@@ -804,6 +804,23 @@ fetcher: function(api) {
 * [Select][Select]
 * [Checkboxes][Checkboxes]
 
+## 临时覆盖样式
+
+有时候需要临时覆盖一下某个组件的样式, 通过借用 `tpl` 在页面中插入一段 `<style>` 内容即可变相地达成
+
+```json
+{
+    "type": "page",
+    "title": "临时覆盖样式",
+    "body": [{
+        "type": "tpl",
+        "tpl": "<style>.a-Button {color: red;}</style>"
+    }, {
+        "type": "button",
+        "label": "按钮"
+    }]
+}
+```
 
 
 [Api 类型]: https://baidu.github.io/amis/docs/renderers/Types#api
