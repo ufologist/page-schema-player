@@ -425,36 +425,52 @@ fetcher: function(api) {
         "api": "https://houtai.baidu.com/api/mock2/form/saveForm?waitSeconds=1",
         "controls": [
             {
-                "name": "email",
-                "label": "Email",
-                "type": "email",
-                "description": "描述文字"
+                "name": "a",
+                "label": "a",
+                "type": "radios",
+                "options": [
+                    {
+                        "label": "是",
+                        "value": 1
+                    },
+                    {
+                        "label": "否",
+                        "value": 2
+                    }
+                ]
             },
             {
-                "name": "text",
+                "name": "b",
+                "label": "b",
                 "type": "text",
-                "label": "Text",
                 "required": true
             }
         ],
-        "onSubmit": function() {
+        "onSubmit": function(data, action) {
             alert('发送提交');
         },
-        "onFinished": function() {
+        "onFinished": function(data, action) {
             alert('提交成功');
         },
-        "onValidate": function(storeData, store) {
+        "onValidate": function(data, store) {
             // 实现有联动关系的校验(动态校验)
             // 根据 a 字段的值, 来决定 b 字段是否校验通过
             // 需要清除 b 字段的验证错误信息, 否则会一直存在
             store.getItemByName('b').clearError();
-            if (storeData.a === 0) {
+
+            if (data.b) {
+                if (data.a == 1 && data.b !== '1') {
+                    return Promise.resolve({
+                        b: '必须填写1'
+                    });
+                } else if (data.a == 2 && data.b !== '2') {
+                    return Promise.resolve({
+                        b: '必须填写2'
+                    });
+                }
+            } else {
                 return Promise.resolve({
-                    b: '必须选 1 个'
-                });
-            } else if (storeData.a === 1) {
-                return Promise.resolve({
-                    b: '必须选 2 个'
+                    b: '这是必填项'
                 });
             }
         }
