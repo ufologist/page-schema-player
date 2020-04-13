@@ -204,6 +204,7 @@ page-schema-player/
 
 * [实现自定义组件的说明文档](https://baidu.github.io/amis/docs/dev)
 * 将自定义组件放置在 `src/ext/amis-components` 目录下
+  * [`Wysiwyg.tsx`](./src/ext/amis-components/Wysiwyg.tsx) 实现基于 UEditor 的富文本编辑器自定义组件来替代 AMis 自带的富文本(Froala Editor)
 
 ## 构建部署
 
