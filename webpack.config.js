@@ -10,6 +10,7 @@ const {
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 var pkg = require('./package.json');
 var argv = yargs.argv;
@@ -57,7 +58,11 @@ function getPlugins() {
       template: "src/index.html",
       // chunks: ['chunk-vendors', 'chunk-common', 'app']
       chunks: ['app']
-    })
+    }),
+    new CopyPlugin([{
+      from: 'ueditor',
+      to: 'ueditor'
+    }])
   ];
   if (isProd) {
     plugins.unshift(new CleanWebpackPlugin());
