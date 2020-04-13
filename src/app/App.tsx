@@ -32,8 +32,12 @@ import '../ext/validations';
 import '../ext/renderer-defaults';
 // AMIS 自定义组件
 import '../ext/amis-components/Demo';
+import '../ext/amis-components/Wysiwyg';
 // 获取默认的环境模式
 import getDefaultMode from '../ext/get-default-mode';
+import {
+    getMainDomain
+} from '../ext/util';
 
 interface AppState {
     schema: any
@@ -43,6 +47,12 @@ var qsParam = new QsMan(window.location.search).getObject();
 // 自动识别环境模式
 if (!qsParam._mode) {
     qsParam._mode = getDefaultMode();
+}
+
+try {
+    window.document.domain = getMainDomain(window.location.hostname);
+} catch (error) {
+    console.warn('document.domain 设置失败', error);
 }
 
 export default class App extends React.Component {

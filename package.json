@@ -1,6 +1,6 @@
 {
   "name": "page-schema-player",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "配页坊: 简称配方 - 为配置页面而生, 专注于配置后台页面",
   "author": "Sun",
   "main": "src/index.tsx",
@@ -20,6 +20,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^3.4.1",
     "copy-to-clipboard": "3.0.8",
+    "ifanrx-react-ueditor": "^2.3.0",
     "nprogress": "^0.2.0",
     "qsman": "0.0.4",
     "react": "^16.8.6",

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+* v1.3.0 2020-4-13
+
+  * feat: 实现基于 UEditor 的富文本编辑器自定义组件来替代 AMis 自带的富文本(Froala Editor)
+
 * v1.2.0 2020-3-31
 
   * feat: 实现接口的未登录处理器(`api._unauthorized`)机制

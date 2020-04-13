@@ -637,9 +637,22 @@ function exec(scrawlObj) {
                     if (!scrawlObj.isCancelScrawl) {
                         var responseObj;
                         responseObj = eval("(" + xhr.responseText + ")");
-                        if (responseObj.state == "SUCCESS") {
+                        // if (responseObj.state == "SUCCESS") {
+                        //     var imgObj = {},
+                        //         url = editor.options.scrawlUrlPrefix + responseObj.url;
+                        //     imgObj.src = url;
+                        //     imgObj._src = url;
+                        //     imgObj.alt = responseObj.original || '';
+                        //     imgObj.title = responseObj.title || '';
+                        //     editor.execCommand("insertImage", imgObj);
+                        //     dialog.close();
+                        // } else {
+                        //     alert(responseObj.state);
+                        // }
+
+                        if (!responseObj.status || responseObj.status == 0) {
                             var imgObj = {},
-                                url = editor.options.scrawlUrlPrefix + responseObj.url;
+                                url = editor.options.scrawlUrlPrefix + responseObj.data;
                             imgObj.src = url;
                             imgObj._src = url;
                             imgObj.alt = responseObj.original || '';
@@ -647,7 +660,7 @@ function exec(scrawlObj) {
                             editor.execCommand("insertImage", imgObj);
                             dialog.close();
                         } else {
-                            alert(responseObj.state);
+                            alert(responseObj.message || (responseObj.statusInfo && responseObj.statusInfo.message));
                         }
 
                     }
@@ -659,7 +672,8 @@ function exec(scrawlObj) {
             };
             options[editor.getOpt('scrawlFieldName')] = base64;
 
-            var actionUrl = editor.getActionUrl(editor.getOpt('scrawlActionName')),
+            // var actionUrl = editor.getActionUrl(editor.getOpt('scrawlActionName')),
+            var actionUrl = editor.getOpt('_scrawlUploadUrl'),
                 params = utils.serializeParam(editor.queryCommandValue('serverparam')) || '',
                 url = utils.formatUrl(actionUrl + (actionUrl.indexOf('?') == -1 ? '?':'&') + params);
             ajax.request(url, options);

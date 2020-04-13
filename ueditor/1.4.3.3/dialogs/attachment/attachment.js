@@ -143,7 +143,8 @@
                 })(),
             // WebUploader实例
                 uploader,
-                actionUrl = editor.getActionUrl(editor.getOpt('fileActionName')),
+                // actionUrl = editor.getActionUrl(editor.getOpt('fileActionName')),
+                actionUrl = editor.getOpt('_fileUploadUrl'),
                 fileMaxSize = editor.getOpt('fileMaxSize'),
                 acceptExtensions = (editor.getOpt('fileAllowFiles') || []).join('').replace(/\./g, ',').replace(/^[,]/, '');;
 
@@ -485,7 +486,7 @@
 
             uploader.on('uploadBeforeSend', function (file, data, header) {
                 //这里可以通过data对象添加POST参数
-                header['X_Requested_With'] = 'XMLHttpRequest';
+                // header['X_Requested_With'] = 'XMLHttpRequest';
             });
 
             uploader.on('uploadProgress', function (file, percentage) {
@@ -502,11 +503,17 @@
                 try {
                     var responseText = (ret._raw || ret),
                         json = utils.str2json(responseText);
-                    if (json.state == 'SUCCESS') {
+                    // if (json.state == 'SUCCESS') {
+                    //     _this.fileList.push(json);
+                    //     $file.append('<span class="success"></span>');
+                    // } else {
+                    //     $file.find('.error').text(json.state).show();
+                    // }
+                    if (!json.status || json.status == 0 || json.code == 0) {
                         _this.fileList.push(json);
                         $file.append('<span class="success"></span>');
                     } else {
-                        $file.find('.error').text(json.state).show();
+                        $file.find('.error').text(json.message || (json.statusInfo && json.statusInfo.message) || json.codeMsg).show();
                     }
                 } catch (e) {
                     $file.find('.error').text(lang.errorServerUpload).show();
@@ -550,13 +557,16 @@
         },
         getInsertList: function () {
             var i, link, data, list = [],
+                getFileResultSrc = editor.getOpt('_getFileResultSrc') || function(prefix, result) {
+                    return prefix + result.data;
+                },
                 prefix = editor.getOpt('fileUrlPrefix');
             for (i = 0; i < this.fileList.length; i++) {
                 data = this.fileList[i];
-                link = data.url;
+                link = getFileResultSrc(prefix, data);
                 list.push({
                     title: data.original || link.substr(link.lastIndexOf('/') + 1),
-                    url: prefix + link
+                    url: link
                 });
             }
             return list;

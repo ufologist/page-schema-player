@@ -1,4 +1,29 @@
 (function () {
+    function getMainDomain(hostname) {
+        var mainDomain = '';
+        var domainSegment = hostname.split('.');
+
+        if (hostname.replace(/[\d\.]/g, '') === '') { // IP
+            mainDomain = hostname;
+        } else if (domainSegment.length === 1) {      // localhost
+            mainDomain = hostname;
+        } else {
+            // 顶级域名
+            var topLevelDomain = domainSegment[domainSegment.length - 1];
+            // 二级域名
+            var secondLevelDomain = domainSegment[domainSegment.length - 2];
+            // 主域名
+            mainDomain = secondLevelDomain + '.' + topLevelDomain;
+        }
+
+        return mainDomain;
+    }
+    try {
+        window.document.domain = getMainDomain(window.location.hostname);
+    } catch (error) {
+        console.warn('document.domain 设置失败', error);
+    }
+
     var parent = window.parent;
     //dialog对象
     dialog = parent.$EDITORUI[window.frameElement.id.replace( /_iframe$/, '' )];
