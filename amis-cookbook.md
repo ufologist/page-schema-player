@@ -22,7 +22,7 @@
 
   > amis 中有大量的功能类 class 可以使用，即可以用在 schema 中，也可以用在自定义组件开发中，掌握这些 class, 几乎可以不用写样式。
   >
-  > amis 中的样式基于 [Bootstrap V3](https://v3.bootcss.com/), 集成了 [Font Awesome](https://fontawesome.com/icons?d=gallery&m=free) 图标
+  > amis 中的样式基于 [Bootstrap V3](https://v3.bootcss.com/), 集成了 [Font Awesome](http://www.fontawesome.com.cn/faicons/) 图标
 * 所有的[示例](https://baidu.github.io/amis/pages/simple)和[渲染器](https://baidu.github.io/amis/docs/renderers)都快速过一遍
 * 对 AMis 提供的能力要有大概的印象
   * 例如有哪些内置组件是可以配置出来的, 大概提供了什么功能
