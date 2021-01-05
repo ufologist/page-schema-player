@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "amis": "^1.0.9",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bootstrap": "^3.4.1",
     "copy-to-clipboard": "3.0.8",
     "ifanrx-react-ueditor": "^2.3.0",
