@@ -16,7 +16,7 @@
     "mis"
   ],
   "dependencies": {
-    "amis": "^1.0.9",
+    "amis": "^1.10.2",
     "axios": "^0.18.0",
     "bootstrap": "^3.4.1",
     "copy-to-clipboard": "3.0.8",
